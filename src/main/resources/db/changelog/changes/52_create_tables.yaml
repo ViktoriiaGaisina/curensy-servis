@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet: 
+      id: 01
+      author: Viktoriia
+      changes:
+        - createTable: 
+            tableName: curency
+            columns:
+              - column: 
+                  name: code
+                  type: varchar(3)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column: 
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+        - createTable: 
+            tableName: exchangeRed
