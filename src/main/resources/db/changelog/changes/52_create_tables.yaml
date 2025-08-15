@@ -1,21 +1,100 @@
 databaseChangeLog:
-  - changeSet: 
+  - changeSet:
       id: 01
       author: Viktoriia
       changes:
-        - createTable: 
+        - createTable:
             tableName: curency
             columns:
-              - column: 
+              - column:
                   name: code
                   type: varchar(3)
                   constraints:
                     primaryKey: true
                     nullable: false
-              - column: 
+              - column:
                   name: name
                   type: varchar(50)
                   constraints:
                     nullable: false
-        - createTable: 
+        - createTable:
             tableName: exchangeRed
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: rate
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: curencyCode
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: datetime
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: exchangeRed
+            baseColumnNames: curencyCode
+            referencedTableName: curency
+            referencedColumnNames: code
+            constraintName: fk_exchangeRed_curency
+        - createTable:
+            tableName: conversion
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: fromCurency
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: toCurency
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: decimal(19, 4)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: convertedAmount
+                  type: decimal(19, 4)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rate
+                  type: decimal(10, 4)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: conversion
+            baseColumnNames: fromCurency
+            referencedTableName: curency
+            referencedColumnNames: code
+            constraintName: fk_conversion_from_curency
+        - addForeignKeyConstraint:
+            baseTableName: conversion
+            baseColumnNames: toCurency
+            referencedTableName: curency
+            referencedColumnNames: code
+            constraintName: fk_conversion_to_curency
+
+
+
+
