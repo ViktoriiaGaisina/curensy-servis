@@ -10,5 +10,4 @@ public interface CurencyMapper {
     CurencyDto toCurencyDto(Curency curency);
     Curency toCurency(CurencyDto curencyDto);
     List<CurencyDto> toCurencyList(List<Curency> curencyDtoList);
-
 }

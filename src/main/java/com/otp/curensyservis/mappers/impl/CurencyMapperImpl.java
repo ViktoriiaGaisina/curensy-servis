@@ -5,12 +5,10 @@ import com.otp.curensyservis.entity.Curency;
 import com.otp.curensyservis.mappers.CurencyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-
 public class CurencyMapperImpl implements CurencyMapper {
     @Override
     public CurencyDto toCurencyDto(Curency curency) {
