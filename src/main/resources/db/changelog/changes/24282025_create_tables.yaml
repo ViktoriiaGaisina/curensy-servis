@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-08-24-update-exchange-red-rate
+      author: Victoria
+      changes:
+        - modifyDataType:
+            tableName: exchange_red
+            columnName: rate
+            newDataType: decimal(10, 2)
+
+        - modifyDataType:
+            tableName: conversion
+            columnName: converted_amount
+            newDataType: decimal
+

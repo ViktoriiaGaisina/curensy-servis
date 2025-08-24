@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 01
-      author: Viktoriia
+      author: Victoria
       changes:
         - createTable:
             tableName: curency
@@ -18,11 +18,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - createTable:
-            tableName: exchangeRed
+            tableName: exchange_red
             columns:
               - column:
                   name: id
-                  type: integer
+                  type: uuid
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -32,40 +32,39 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: curencyCode
+                  name: curency
                   type: varchar(3)
                   constraints:
+                    foreignKeyName: fk_exchange_red_curency_code
+                    references: curency(code)
                     nullable: false
               - column:
                   name: date
                   type: datetime
                   constraints:
                     nullable: false
-        - addForeignKeyConstraint:
-            baseTableName: exchangeRed
-            baseColumnNames: curencyCode
-            referencedTableName: curency
-            referencedColumnNames: code
-            constraintName: fk_exchangeRed_curency
         - createTable:
             tableName: conversion
             columns:
               - column:
                   name: id
-                  type: integer
-                  autoIncrement: true
+                  type: uuid
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: fromCurency
+                  name: from_curency
                   type: varchar(3)
                   constraints:
+                    foreignKeyName: fk_conversion_from_curency_code
+                    references: curency(code)
                     nullable: false
               - column:
-                  name: toCurency
+                  name: to_curency
                   type: varchar(3)
                   constraints:
+                    foreignKeyName: fk_conversion_to_curency_code
+                    references: curency(code)
                     nullable: false
               - column:
                   name: amount
@@ -73,7 +72,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: convertedAmount
+                  name: converted_amount
                   type: decimal(19, 4)
                   constraints:
                     nullable: false
@@ -82,18 +81,6 @@ databaseChangeLog:
                   type: decimal(10, 4)
                   constraints:
                     nullable: false
-        - addForeignKeyConstraint:
-            baseTableName: conversion
-            baseColumnNames: fromCurency
-            referencedTableName: curency
-            referencedColumnNames: code
-            constraintName: fk_conversion_from_curency
-        - addForeignKeyConstraint:
-            baseTableName: conversion
-            baseColumnNames: toCurency
-            referencedTableName: curency
-            referencedColumnNames: code
-            constraintName: fk_conversion_to_curency
 
 
 

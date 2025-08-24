@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
+      - "5439:5432"
     networks:
       - postgres-net
   zookeeper:
@@ -49,3 +49,4 @@ services:
       - zookeeper
 networks:
   postgres-net:
+    driver: bridge
