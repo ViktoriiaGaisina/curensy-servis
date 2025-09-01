@@ -10,8 +10,8 @@ import java.util.UUID;
 
 @Data
 @Builder
-@Schema(name = "ExchangeRedDto", description = "Представление курса валют")
-public class ExchangeRedDto {
+@Schema(name = "ExchangeResponseRedDto", description = "Ответ по курсу валют")
+public class ExchangeResponseRedDto {
     @Schema(description = "ID курса", example = "9f1b3e1a-1234-4bcd-8ef0-1234567890ab")
     private UUID id;
     @Schema(description = "Курс", example = "84.35")
@@ -21,3 +21,4 @@ public class ExchangeRedDto {
     @Schema(description = "Валюта курса")
     private CurencyDto curency;
 }
+

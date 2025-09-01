@@ -1,34 +1,39 @@
 package com.otp.curensyservis.controller;
 
-import com.otp.curensyservis.dto.ExchangeRedDto;
-import com.otp.curensyservis.entity.ExchangeRed;
+import com.otp.curensyservis.dto.ExchangeRequestRedDto;
+import com.otp.curensyservis.dto.ExchangeResponseRedDto;
+import com.otp.curensyservis.dto.ExchangeUpdateRedDto;
 import com.otp.curensyservis.service.impl.ExchangeRedService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/exchangeRed")
 @RequiredArgsConstructor
+@Tag(name = "ExchangeRate", description = "Курсы валют (red)")
 public class ExchangeRedController {
     private final ExchangeRedService exchangeRedService;
 
-    @GetMapping("/getByRate")
-    public ExchangeRedDto getByRate(ExchangeRed exchangeRed){
-        return exchangeRedService.getByRate(exchangeRed);
-    }
-    @GetMapping("/getByCurencyAndRate")
-    public ExchangeRedDto getByCurencyAndRate(ExchangeRed exchangeRed){
-        return exchangeRedService.getByCurencyAndRate(exchangeRed);
-    }
-    @GetMapping("/save")
-    public ExchangeRedDto save(ExchangeRed exchangeRed){
-        return exchangeRedService.save(exchangeRed);
-    }
-    @GetMapping("/update")
-    public ExchangeRedDto update(ExchangeRed exchangeRed){
-        return exchangeRedService.update(exchangeRed);
+    @GetMapping("/{id}")
+    @Operation(summary = "Получить курс по ID")
+    public ExchangeResponseRedDto getById(@PathVariable UUID id) {
+        return exchangeRedService.getById(id);
     }
 
+    @PostMapping("/save")
+    @Operation(summary = "Сохранить курс")
+    public ExchangeResponseRedDto save(@RequestBody ExchangeRequestRedDto exchangeRed) {
+        return exchangeRedService.save(exchangeRed);
+    }
+
+    @PutMapping("/update/{id}")
+    @Operation(summary = "Обновить курс по ID")
+    public ExchangeResponseRedDto update(@RequestBody ExchangeUpdateRedDto exchangeRed, @PathVariable UUID id) {
+        return exchangeRedService.update(exchangeRed, id);
+    }
 }

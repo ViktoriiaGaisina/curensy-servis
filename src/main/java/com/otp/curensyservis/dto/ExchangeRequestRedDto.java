@@ -6,18 +6,17 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 @Data
 @Builder
-@Schema(name = "ExchangeRedDto", description = "Представление курса валют")
-public class ExchangeRedDto {
-    @Schema(description = "ID курса", example = "9f1b3e1a-1234-4bcd-8ef0-1234567890ab")
-    private UUID id;
-    @Schema(description = "Курс", example = "84.35")
+@Schema(name = "ExchangeRequestRedDto", description = "Запрос на создание записи курса")
+public class ExchangeRequestRedDto {
+    @Schema(description = "Курс", example = "92.10", requiredMode = Schema.RequiredMode.REQUIRED)
     private BigDecimal rate;
     @Schema(description = "Дата и время курса", example = "2025-08-28T12:00:00")
     private LocalDateTime date;
-    @Schema(description = "Валюта курса")
+    @Schema(description = "Валюта курса", requiredMode = Schema.RequiredMode.REQUIRED)
     private CurencyDto curency;
 }
+

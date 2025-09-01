@@ -1,8 +1,11 @@
 package com.otp.curensyservis.controller;
 
-import com.otp.curensyservis.dto.ConversionDto;
-import com.otp.curensyservis.entity.Conversion;
+import com.otp.curensyservis.dto.ConversionRequestDto;
+import com.otp.curensyservis.dto.ConversionResponseDto;
+import com.otp.curensyservis.dto.ConversionUpdateRequestDto;
 import com.otp.curensyservis.service.impl.ConversionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,27 +13,31 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/conversion")
+@Tag(name = "Conversions", description = "Операции конвертации валют")
 @RequiredArgsConstructor
 public class ConversionController {
     private final ConversionService conversionService;
 
     @PostMapping("/save")
-    public ConversionDto save(Conversion conversion) {
+    @Operation(summary = "Создать конвертацию")
+    public ConversionResponseDto save(ConversionRequestDto conversion) {
         return conversionService.save(conversion);
     }
 
-    @PutMapping("/update")
-    public ConversionDto update(Conversion conversion) {
-        return conversionService.update(conversion);
+    @PutMapping("/{id}")
+    @Operation(summary = "Обновить конвертацию по ID")
+    public ConversionResponseDto update(ConversionUpdateRequestDto conversion, @PathVariable UUID id) {
+        return conversionService.update(conversion, id);
     }
 
     @GetMapping("/{id}")
-    public ConversionDto getById(@PathVariable UUID id) {
+    @Operation(summary = "Получить конвертацию по ID")
+    public ConversionResponseDto getById(@PathVariable UUID id) {
         return conversionService.getById(id);
     }
 
     @GetMapping("/curency-rate")
-    public ConversionDto getByCurencyAndRate(Conversion conversion) {
-        return conversionService.getByCurencyAndRate(conversion);
+    public ConversionResponseDto getByCurencyAndRate(ConversionRequestDto conversionRequestDto) {
+        return null;
     }
 }

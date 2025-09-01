@@ -1,11 +1,15 @@
 package com.otp.curensyservis.service.impl;
-import com.otp.curensyservis.dto.ExchangeRedDto;
-import com.otp.curensyservis.entity.ExchangeRed;
 
+import com.otp.curensyservis.dto.ExchangeRequestRedDto;
+import com.otp.curensyservis.dto.ExchangeResponseRedDto;
+import com.otp.curensyservis.dto.ExchangeUpdateRedDto;
+
+import java.util.UUID;
 
 public interface ExchangeRedService {
-    ExchangeRedDto getByRate(ExchangeRed exchangeRed);
-    ExchangeRedDto getByCurencyAndRate(ExchangeRed exchangeRed);
-    ExchangeRedDto save(ExchangeRed exchangeRed);
-    ExchangeRedDto update(ExchangeRed exchangeRed);
+    ExchangeResponseRedDto getById(UUID id);
+
+    ExchangeResponseRedDto save(ExchangeRequestRedDto exchangeRed);
+
+    ExchangeResponseRedDto update(ExchangeUpdateRedDto exchangeRed, UUID id);
 }

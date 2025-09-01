@@ -1,43 +1,45 @@
 package com.otp.curensyservis.service;
 
 import com.otp.curensyservis.dto.ConversionDto;
+import com.otp.curensyservis.dto.ConversionRequestDto;
+import com.otp.curensyservis.dto.ConversionResponseDto;
+import com.otp.curensyservis.dto.ConversionUpdateRequestDto;
 import com.otp.curensyservis.entity.Conversion;
-import com.otp.curensyservis.mappers.ConversionMapper;
+import com.otp.curensyservis.newmappers.ConversionNewMaper;
 import com.otp.curensyservis.repository.ConversionRepository;
 import com.otp.curensyservis.service.impl.ConversionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
 
 
 @Service
 @RequiredArgsConstructor
 public class ConversionServiceImpl implements ConversionService {
-    private final ConversionMapper conversionMapper;
+    private final ConversionNewMaper conversionMapper;
     private final ConversionRepository conversionRepository;
+    private final ConversionNewMaper conversionNewMaper;
 
     @Override
-    public ConversionDto getById(UUID id) {
+    public ConversionResponseDto getById(UUID id) {
         return conversionRepository.findById(id)
-                .map(conversionMapper::toConversionDto)
+                .map(conversionNewMaper::toResponseDto)
                 .orElseThrow(() -> new IllegalArgumentException("Conversion not found"));
     }
 
     @Override
-    public ConversionDto save(Conversion conversion) {
-        conversionRepository.save(conversion);
-        return conversionMapper.toConversionDto(conversion);
+    public ConversionResponseDto save(ConversionRequestDto conversionRequestDto) {
+        Conversion conversion = conversionRepository.save(conversionMapper.toEntity(conversionRequestDto));
+        return conversionMapper.toResponseDto(conversion);
     }
 
     @Override
-    public ConversionDto update(Conversion conversion) {
-       Conversion conversion1 = conversionRepository.findById(conversion.getId())
+    public ConversionResponseDto update(ConversionUpdateRequestDto conversionUpdateRequestDto, UUID id) {
+       Conversion conversion = conversionRepository.findById(id)
                .orElseThrow(() -> new IllegalArgumentException("not found"));
-       conversion1.setRate(conversion.getRate());
-       conversion1.setAmount(conversion.getAmount());
-       conversionRepository.save(conversion1);
-       return conversionMapper.toConversionDto(conversion1);
+       conversionNewMaper.toEntity(conversionUpdateRequestDto, conversion);
+       conversionRepository.save(conversion);
+       return conversionMapper.toResponseDto(conversion);
 
     }
 
@@ -47,16 +49,17 @@ public class ConversionServiceImpl implements ConversionService {
         conversionRepository.deleteById(id);
     }
 
-    @Override
-    public ConversionDto getByCurencyAndRate(Conversion conversion) {
-        return conversionRepository.findByFromCurencyAndToCurencyAndRate(
-                conversion.getFromCurency(), conversion.getToCurency(), conversion.getRate())
-                .map(conversionMapper::toConversionDto)
-                .orElseThrow(() -> new IllegalArgumentException("Conversion not found"));
-    }
+
+//    @Override
+//    public ConversionResponseDto getByCurencyAndRate(ConversionRequestDto conversion) {
+//        return conversionRepository.findByFromCurencyAndToCurencyAndRate(
+//                conversion.getFromCurencyCode(), conversion.getToCurencyCode(), conversion.getRate())
+//                .map(conversionMapper::toResponseDto)
+//                .orElseThrow(() -> new IllegalArgumentException("Conversion not found"));
+//    }
 
     @Override
-    public ConversionDto convert(ConversionDto conversionDto) {
+    public ConversionResponseDto convert(ConversionDto conversionDto) {
         return null;
     }
 }

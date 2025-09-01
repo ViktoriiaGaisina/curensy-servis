@@ -1,13 +1,16 @@
 package com.otp.curensyservis.service.impl;
 import com.otp.curensyservis.dto.ConversionDto;
-import com.otp.curensyservis.entity.Conversion;
+import com.otp.curensyservis.dto.ConversionRequestDto;
+import com.otp.curensyservis.dto.ConversionResponseDto;
+import com.otp.curensyservis.dto.ConversionUpdateRequestDto;
+
 import java.util.UUID;
 
 public interface ConversionService {
-    ConversionDto getById(UUID id);
-    ConversionDto save(Conversion conversion);
-    ConversionDto update(Conversion conversion);
+    ConversionResponseDto getById(UUID id);
+    ConversionResponseDto save(ConversionRequestDto conversion);
+    ConversionResponseDto update(ConversionUpdateRequestDto conversionUpdateRequestDto, UUID id);
     void deleteById(UUID id);
-    ConversionDto getByCurencyAndRate(Conversion conversionDto);
-    ConversionDto convert(ConversionDto conversionDto);
+    //ConversionResponseDto getByCurencyAndRate(ConversionRequestDto conversion);
+    ConversionResponseDto convert(ConversionDto conversionDto);
 }

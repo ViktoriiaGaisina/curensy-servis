@@ -1,8 +1,10 @@
 package com.otp.curensyservis.service;
 
-import com.otp.curensyservis.dto.CurencyDto;
+import com.otp.curensyservis.dto.CurencyRequestDto;
+import com.otp.curensyservis.dto.CurencyResponseDto;
+import com.otp.curensyservis.dto.CurencyUpdateDto;
 import com.otp.curensyservis.entity.Curency;
-import com.otp.curensyservis.mappers.CurencyMapper;
+import com.otp.curensyservis.newmappers.CurencyNewMapper;
 import com.otp.curensyservis.repository.CurencyRepository;
 import com.otp.curensyservis.service.impl.CurencyService;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CurencyServiceImpl implements CurencyService {
     private final CurencyRepository curencyRepository;
-    private final CurencyMapper curencyMapper;
+    private final CurencyNewMapper curencyMapper;
 
 
     @Override
-    public CurencyDto getByCode(String code) {
-        return  curencyRepository.findById(code)
-                .map(curencyMapper::toCurencyDto)
+    public CurencyResponseDto getByCode(String code) {
+        return curencyRepository.findById(code)
+                .map(curencyMapper::toResponseDto)
                 .orElseThrow(() -> new IllegalArgumentException("Curency not found"));
     }
 
@@ -32,23 +34,22 @@ public class CurencyServiceImpl implements CurencyService {
     }
 
     @Override
-    public CurencyDto save(Curency curency) {
-         curencyRepository.save(curency);
-        return curencyMapper.toCurencyDto(curency);
+    public CurencyResponseDto save(CurencyRequestDto curencyRequestDto) {
+        Curency curency1 = curencyMapper.toCurency(curencyRequestDto);
+        curencyRepository.save(curency1);
+        return curencyMapper.toEntities(curency1);
     }
 
     @Override
-    public CurencyDto update(Curency curency) {
-        Curency curencies = curencyRepository.findById(curency.getCode()).orElseThrow(() ->
+    public CurencyResponseDto update(CurencyUpdateDto curencyUpdateDto, String code) {
+        Curency curency = curencyRepository.findById(code).orElseThrow(() ->
                 new IllegalArgumentException("Curency not found"));
-        curencies.setName(curency.getName());
-         curencyRepository.save(curencies);
-         return curencyMapper.toCurencyDto(curencies);
+        curencyMapper.toUpdateEntity(curencyUpdateDto, curency);
+        return curencyMapper.toResponseDto(curencyRepository.save(curency));
     }
 
     @Override
-    public List<CurencyDto> getAllCurency() {
-        List<Curency> curencyList = curencyRepository.findAll();
-        return curencyMapper.toCurencyList(curencyList);
+    public List<CurencyResponseDto> getAllCurency() {
+        return curencyRepository.findAll().stream().map(curencyMapper::toResponseDto).toList();
     }
 }
