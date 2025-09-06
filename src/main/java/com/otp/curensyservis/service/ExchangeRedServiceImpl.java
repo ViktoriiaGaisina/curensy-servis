@@ -22,7 +22,7 @@ public class ExchangeRedServiceImpl implements ExchangeRedService {
     @Override
     public ExchangeResponseRedDto getById(UUID id) {
             ExchangeRed exchangeRed = exchangeRedRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("NOT FOUND"));
+                -> new com.otp.curensyservis.exception.NotFoundException("NOT FOUND"));
             return exchangeRedMapper.toResponseDto(exchangeRed);
     }
 
@@ -36,7 +36,7 @@ public class ExchangeRedServiceImpl implements ExchangeRedService {
     @Override
     public ExchangeResponseRedDto update(ExchangeUpdateRedDto exchangeRequestRedDto, UUID id) {
         ExchangeRed exchangeRed = exchangeRedRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+                .orElseThrow(() -> new com.otp.curensyservis.exception.NotFoundException("NOT FOUND"));
         exchangeRedMapper.toEntityFromRequest(exchangeRequestRedDto, exchangeRed);
         return exchangeRedMapper.toResponseDto(exchangeRedRepository.save(exchangeRed));
     }

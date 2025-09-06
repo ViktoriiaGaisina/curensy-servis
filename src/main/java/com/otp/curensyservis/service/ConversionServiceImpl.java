@@ -24,7 +24,7 @@ public class ConversionServiceImpl implements ConversionService {
     public ConversionResponseDto getById(UUID id) {
         return conversionRepository.findById(id)
                 .map(conversionNewMaper::toResponseDto)
-                .orElseThrow(() -> new IllegalArgumentException("Conversion not found"));
+                .orElseThrow(() -> new com.otp.curensyservis.exception.NotFoundException("Conversion not found"));
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ConversionServiceImpl implements ConversionService {
     @Override
     public ConversionResponseDto update(ConversionUpdateRequestDto conversionUpdateRequestDto, UUID id) {
        Conversion conversion = conversionRepository.findById(id)
-               .orElseThrow(() -> new IllegalArgumentException("not found"));
+               .orElseThrow(() -> new com.otp.curensyservis.exception.NotFoundException("not found"));
        conversionNewMaper.toEntity(conversionUpdateRequestDto, conversion);
        conversionRepository.save(conversion);
        return conversionMapper.toResponseDto(conversion);
@@ -45,7 +45,7 @@ public class ConversionServiceImpl implements ConversionService {
 
     @Override
     public void deleteById(UUID id) {
-        conversionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Conversion not found"));
+        conversionRepository.findById(id).orElseThrow(() -> new com.otp.curensyservis.exception.NotFoundException("Conversion not found"));
         conversionRepository.deleteById(id);
     }
 
@@ -55,7 +55,7 @@ public class ConversionServiceImpl implements ConversionService {
 //        return conversionRepository.findByFromCurencyAndToCurencyAndRate(
 //                conversion.getFromCurencyCode(), conversion.getToCurencyCode(), conversion.getRate())
 //                .map(conversionMapper::toResponseDto)
-//                .orElseThrow(() -> new IllegalArgumentException("Conversion not found"));
+//                .orElseThrow(() -> new com.otp.curensyservis.exception.NotFoundException("Conversion not found"));
 //    }
 
     @Override

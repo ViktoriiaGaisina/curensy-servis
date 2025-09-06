@@ -32,6 +32,6 @@ public abstract class ExchangeRedNewMapper {
     @Named("toCurencyFromCode")
     protected Curency toCurencyFromCode(String curencyCode) {
         return curencyRepository.findById(curencyCode).orElseThrow(()
-                -> new IllegalArgumentException("Curency not found"));
+                -> new com.otp.curensyservis.exception.NotFoundException("Curency not found"));
     }
 }

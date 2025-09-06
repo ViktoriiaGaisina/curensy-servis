@@ -11,3 +11,16 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            logger-level: full
+          permission-service:
+            connect-timeout: 5000
+logging:
+  level:
+    com.otp.curensyservis.feign.PermissionClient: DEBUG
+
+

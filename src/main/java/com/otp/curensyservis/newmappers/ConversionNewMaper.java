@@ -30,7 +30,7 @@ public abstract class ConversionNewMaper {
     @Named( "curencyCodeToCurency")
     protected Curency curencyCodeToCurency(String curencyCode) {
         return curencyRepository.findById(curencyCode).orElseThrow(() ->
-                new IllegalArgumentException("Curency not found"));
+                new com.otp.curensyservis.exception.NotFoundException("Curency not found"));
     }
 
     @Mapping(target = "fromCurency", source = "fromCurencyCode", qualifiedByName = "curencyCodeToCurency")
